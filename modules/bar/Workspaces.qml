@@ -27,6 +27,15 @@ Rectangle {
                 Layout.preferredHeight: 24
                 Layout.alignment: Qt.AlignCenter
 
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: (mouse) => {
+                        if (mouse.button === Qt.LeftButton) {
+                            niri.focusWorkspaceById(model.id)
+                        }
+                    }
+                }
+
                 Rectangle {
                     anchors.centerIn: parent
 

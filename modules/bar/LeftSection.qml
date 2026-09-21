@@ -9,5 +9,6 @@ Rectangle {
 
         Icon {}
         Workspaces {}
+        WindowTitle {}
     }
 }

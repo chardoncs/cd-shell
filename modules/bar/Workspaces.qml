@@ -13,11 +13,9 @@ Rectangle {
             model: SortFilterProxyModel {
                 model: niri.workspaces
                 filters: [
-                    FunctionFilter {
-                        component RoleData: QtObject { property string output }
-                        function filter(data: RoleData): bool {
-                            return data.output === bar.screen.name
-                        }
+                    ValueFilter {
+                        roleName: "output"
+                        value: bar.screen.name
                     }
                 ]
             }

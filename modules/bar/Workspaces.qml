@@ -10,7 +10,17 @@ Rectangle {
         Layout.fillHeight: true
 
         Repeater {
-            model: niri.workspaces
+            model: SortFilterProxyModel {
+                model: niri.workspaces
+                filters: [
+                    FunctionFilter {
+                        component RoleData: QtObject { property string output }
+                        function filter(data: RoleData): bool {
+                            return data.output === bar.screen.name
+                        }
+                    }
+                ]
+            }
 
             Item {
                 Layout.preferredWidth: 24

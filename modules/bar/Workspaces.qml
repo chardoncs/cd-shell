@@ -60,10 +60,8 @@ Row {
                         to: "*"
                         reversible: true
 
-                        SequentialAnimation {
-                            NumberAnimation { properties: "radius,width,height"; duration: 100 }
-                            ColorAnimation { duration: 100 }
-                        }
+                        NumberAnimation { properties: "radius,width,height"; duration: 100 }
+                        ColorAnimation { duration: 100 }
                     }
 
                     Text {

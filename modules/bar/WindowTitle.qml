@@ -1,22 +1,24 @@
 import QtQuick
+import qs.services
 
 Row {
     leftPadding: 6
+    rightPadding: 6
     spacing: 6
 
     Image {
         anchors.verticalCenter: parent.verticalCenter
-        source: niri.focusedWindow?.iconPath ? "file://" + niri.focusedWindow?.iconPath : ""
+        source: Niri.focusedWindow?.iconPath ? "file://" + Niri.focusedWindow?.iconPath : ""
         sourceSize {
             width: 16
             height: 16
         }
-        visible: niri.focusedWindow?.iconPath !== ""
+        visible: Niri.focusedWindow?.iconPath !== ""
         smooth: true
     }
 
     Text {
-        text: truncateTitle(niri.focusedWindow?.title ?? "")
+        text: truncateTitle(Niri.focusedWindow?.title ?? "")
         color: "white"
 
         function truncateTitle(title: string): string {

@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import qs.services
 
 Row {
     RowLayout {
@@ -9,7 +10,7 @@ Row {
 
         Repeater {
             model: SortFilterProxyModel {
-                model: niri.workspaces
+                model: Niri.workspaces
                 filters: [
                     ValueFilter {
                         roleName: "output"
@@ -25,9 +26,10 @@ Row {
 
                 MouseArea {
                     anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
                     onClicked: (mouse) => {
                         if (mouse.button === Qt.LeftButton) {
-                            niri.focusWorkspaceById(model.id)
+                            Niri.focusWorkspaceById(model.id)
                         }
                     }
                 }

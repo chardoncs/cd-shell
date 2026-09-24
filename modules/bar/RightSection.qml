@@ -5,6 +5,12 @@ Rectangle {
     color: "transparent"
 
     RowLayout {
-        anchors.verticalCenter: parent.verticalCenter
+        anchors {
+            fill: parent
+            verticalCenter: parent.verticalCenter
+        }
+        layoutDirection: Qt.RightToLeft
+
+        Tray {}
     }
 }

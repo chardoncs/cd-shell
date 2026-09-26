@@ -34,8 +34,8 @@ Scope {
                 y: tooltipWindow.height
             }
         }
-        width: tooltipText.width + 20
-        height: 24
+        implicitWidth: tooltipText.width + 20
+        implicitHeight: 24
 
         Text {
             id: tooltipText

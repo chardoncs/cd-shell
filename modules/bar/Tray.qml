@@ -68,7 +68,7 @@ Row {
             Tooltip {
                 id: tooltip
                 anchorItem: trayItem
-                text: trayItem.modelData.tooltipTitle
+                text: trayItem.modelData.tooltipTitle || trayItem.modelData.title
             }
 
             QsMenuAnchor {

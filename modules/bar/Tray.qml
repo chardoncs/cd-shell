@@ -7,7 +7,6 @@ import qs.modules.components
 Row {
     spacing: 4
 
-    leftPadding: 10
     rightPadding: 10
 
     Repeater {

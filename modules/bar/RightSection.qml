@@ -15,5 +15,6 @@ Rectangle {
         Tray {}
         PowerProfile {}
         Battery {}
+        Networks {}
     }
 }

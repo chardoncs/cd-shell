@@ -2,7 +2,7 @@ import QtQuick
 import qs.services
 
 Rectangle {
-    visible: PowerProfileService.isAvailable
+    visible: PowerProfileService.available
 
     implicitWidth: 20
     implicitHeight: 20

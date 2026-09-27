@@ -7,7 +7,7 @@ import Quickshell.Services.UPower
 
 Singleton {
     id: root
-    property bool isAvailable: PowerProfiles.hasPerformanceProfile
+    property bool available: PowerProfiles.hasPerformanceProfile
     property string profile: {
         switch (PowerProfiles.profile) {
         case PowerProfile.PowerSaver:

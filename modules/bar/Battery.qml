@@ -2,11 +2,11 @@ import QtQuick
 import Quickshell.Services.UPower
 
 Row {
-    visible: internal.isAvailable
+    visible: internal.available
 
     QtObject {
         id: internal
-        property bool isAvailable: UPower.displayDevice.isLaptopBattery && UPower.displayDevice.ready && UPower.displayDevice.isPresent
+        property bool available: UPower.displayDevice.isLaptopBattery && UPower.displayDevice.ready && UPower.displayDevice.isPresent
     }
 
     Icon {

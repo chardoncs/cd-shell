@@ -52,7 +52,7 @@ Row {
                                 if (deviceItem.modelData.type === DeviceType.Wifi) {
                                     return `${Math.round((item.modelData as WifiNetwork).signalStrength * 100)}%`;
                                 }
-                                return "Connected";
+                                return item.modelData.name;
                             default:
                                 return "Unknown"
                             }

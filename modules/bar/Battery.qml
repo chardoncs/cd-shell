@@ -1,22 +1,20 @@
 import QtQuick
-import Quickshell
 import Quickshell.Services.UPower
 
 Row {
-    spacing: 4
+    visible: internal.isAvailable
+
     QtObject {
         id: internal
         property bool isAvailable: UPower.displayDevice.isLaptopBattery && UPower.displayDevice.ready && UPower.displayDevice.isPresent
     }
-
-    visible: internal.isAvailable
 
     Icon {
         text: {
             switch (UPower.displayDevice.state) {
             case UPowerDeviceState.Charging:
                 return getChargingIcon(UPower.displayDevice.percentage);
-            case UPowerDeviceState.FullyChanged:
+            case UPowerDeviceState.FullyCharged:
                 return "󱐥";
             case UPowerDeviceState.Discharging:
                 return getDischargingIcon(UPower.displayDevice.percentage);
@@ -97,7 +95,7 @@ Row {
     }
 
     Text {
-        text: `${UPower.displayDevice.percentage * 100}%`
+        text: `${Math.round(UPower.displayDevice.percentage * 100)}%`
         color: "white"
     }
 }

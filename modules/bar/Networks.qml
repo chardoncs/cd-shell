@@ -1,6 +1,8 @@
 import QtQuick
 import Quickshell
 import Quickshell.Networking
+import qs.modules.components
+import qs.utils
 
 Row {
     spacing: 6
@@ -50,7 +52,7 @@ Row {
                                 return "Disconnected"
                             case ConnectionState.Connected:
                                 if (deviceItem.modelData.type === DeviceType.Wifi) {
-                                    return `${Math.round((item.modelData as WifiNetwork).signalStrength * 100)}%`;
+                                    return Percentage.toPercentage((item.modelData as WifiNetwork).signalStrength);
                                 }
                                 return item.modelData.name;
                             default:

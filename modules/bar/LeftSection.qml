@@ -7,7 +7,7 @@ Rectangle {
     RowLayout {
         anchors.verticalCenter: parent.verticalCenter
 
-        Icon {}
+        ActionIcon {}
         Workspaces {}
         WindowTitle {}
     }

@@ -16,5 +16,6 @@ Rectangle {
         PowerProfile {}
         Battery {}
         Networks {}
+        PipewireDevices {}
     }
 }

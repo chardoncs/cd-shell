@@ -1,9 +1,9 @@
 import QtQuick
 import qs.services
+import qs.modules.components
 
-Text {
+Icon {
     text: "󰣇"
-    color: "white"
     leftPadding: 10
     rightPadding: 4
 

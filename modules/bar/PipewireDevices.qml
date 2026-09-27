@@ -1,5 +1,4 @@
 import QtQuick
-import Quickshell
 import Quickshell.Services.Pipewire
 import qs.modules.components
 import qs.utils

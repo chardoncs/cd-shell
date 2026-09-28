@@ -23,7 +23,6 @@ Singleton {
         proc.exec({
             command: ["powerprofilesctl", "set", profile],
         });
-        root.profile = profile;
     }
 
     function cycleProfile() {

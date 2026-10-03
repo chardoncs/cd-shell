@@ -17,5 +17,7 @@ Rectangle {
         Battery {}
         Networks {}
         PipewireDevices {}
+        PerformanceStats {}
+        DiskSpace {}
     }
 }

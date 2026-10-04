@@ -6,6 +6,7 @@ import Quickshell.Io
 
 Singleton {
     id: cpuStat
+
     property double overallPercentage
 
     property int interval: 5000

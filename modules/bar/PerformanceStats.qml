@@ -12,7 +12,7 @@ Row {
     }
 
     Text {
-        text: "RAM 0%"
+        text: `RAM ${Percentage.toPercentage(Memory.percentage)}`
         color: "white"
     }
 }

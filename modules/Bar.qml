@@ -10,6 +10,7 @@ Scope {
         PanelWindow { // qmllint disable uncreatable-type
             id: bar
             required property var modelData
+            property bool isPrimaryScreen: screen === Quickshell.screens[0]
 
             screen: modelData
 
@@ -38,6 +39,12 @@ Scope {
                 RightSection {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                }
+
+                LazyLoader {
+                    loading: bar.isPrimaryScreen
+
+                    ToastSystem {}
                 }
             }
         }

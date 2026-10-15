@@ -52,11 +52,9 @@ Rectangle {
 
         if (hoverArea.containsMouse) {
             if (countdownAnimation.running) {
-                countdownAnimation.pause();
+                countdownAnimation.stop();
             }
-        } else if (countdownAnimation.paused) {
-            countdownAnimation.resume();
-        } else if (!countdownAnimation.running) {
+        } else if (countdownAnimation.paused || !countdownAnimation.running) {
             countdownAnimation.start();
         }
     }
@@ -218,7 +216,7 @@ Rectangle {
                     anchors.centerIn: parent
                     width: 24
                     height: 24
-                    visible: root.autoDismiss
+                    visible: root.autoDismiss && countdownAnimation.running
                     antialiasing: true
 
                     ShapePath {
@@ -250,7 +248,7 @@ Rectangle {
                     id: closeArea
 
                     anchors.fill: parent
-                    hoverEnabled: true
+                    hoverEnabled: false
                     cursorShape: Qt.PointingHandCursor
                     onClicked: root.close()
                 }

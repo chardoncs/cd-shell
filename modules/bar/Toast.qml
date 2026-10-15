@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Shapes
 import Quickshell
 import Quickshell.Services.Notifications
 import qs.modules.components
@@ -15,8 +16,16 @@ Rectangle {
 
     readonly property bool critical: notification.urgency === NotificationUrgency.Critical
     readonly property bool autoDismiss: !root.critical && !notification.resident
-    readonly property int timeout: notification.expireTimeout > 0 ? Math.round(notification.expireTimeout * 1000) : root.defaultTimeout
+    // Quickshell passes the D-Bus expire_timeout straight through, and that
+    // value is already in milliseconds; a negative value means the sender did
+    // not request a timeout, so fall back to our own default.
+    readonly property int timeout: notification.expireTimeout > 0 ? notification.expireTimeout : root.defaultTimeout
     readonly property string appIconSource: notification.appIcon !== "" ? Quickshell.iconPath(notification.appIcon, "") : ""
+
+    // Remaining fraction of the auto-dismiss countdown, from 1 (full) down to
+    // 0 (expired). This is the single source of truth for the timeout, so the
+    // ring around the close button always reflects the real time left.
+    property real countdown: 1
 
     // Set once the toast starts playing its exit animation so repeated
     // dismissals (hover timeout + click) only fire once.
@@ -27,7 +36,29 @@ Rectangle {
             return;
         }
         root.closing = true;
+        countdownAnimation.stop();
         exitAnimation.start();
+    }
+
+    // Starts, pauses or resumes the countdown to match the current hover state.
+    // An animation that has been paused still reports running == true, so the
+    // paused case has to be handled explicitly: without it a hover would leave
+    // the animation paused for good and the toast would never auto-dismiss.
+    function syncCountdown() {
+        if (root.closing || !root.autoDismiss) {
+            countdownAnimation.stop();
+            return;
+        }
+
+        if (hoverArea.containsMouse) {
+            if (countdownAnimation.running) {
+                countdownAnimation.pause();
+            }
+        } else if (countdownAnimation.paused) {
+            countdownAnimation.resume();
+        } else if (!countdownAnimation.running) {
+            countdownAnimation.start();
+        }
     }
 
     color: root.critical ? "#2a1616" : "#1a1a1a"
@@ -39,7 +70,10 @@ Rectangle {
     opacity: 0
     scale: 0.96
 
-    Component.onCompleted: appearAnimation.start()
+    Component.onCompleted: {
+        appearAnimation.start();
+        root.syncCountdown();
+    }
 
     ParallelAnimation {
         id: appearAnimation
@@ -94,14 +128,22 @@ Rectangle {
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onClicked: root.close()
+        onContainsMouseChanged: root.syncCountdown()
     }
 
-    // Auto-dismiss, paused while the pointer is over the toast so it can be
-    // read or interacted with.
-    Timer {
-        running: root.autoDismiss && !hoverArea.containsMouse && !root.closing
-        interval: root.timeout
-        onTriggered: root.close()
+    // Auto-dismiss countdown, paused while the pointer is over the toast so it
+    // can be read or interacted with. Linear so the ring depletes at a constant
+    // rate, and resumable so a hover does not restart the full timeout.
+    NumberAnimation {
+        id: countdownAnimation
+
+        target: root
+        property: "countdown"
+        from: 1
+        to: 0
+        duration: root.timeout
+        easing.type: Easing.Linear
+        onFinished: root.close()
     }
 
     ColumnLayout {
@@ -148,14 +190,55 @@ Rectangle {
                 maximumLineCount: 1
             }
 
-            Rectangle {
+            Item {
                 id: closeButton
 
                 Layout.alignment: Qt.AlignVCenter
-                implicitWidth: 20
-                implicitHeight: 20
-                radius: 10
-                color: closeArea.containsMouse ? "#3a3a3a" : "transparent"
+                // Slightly larger than the 20px hover backdrop so the countdown
+                // ring has room to sit around it.
+                implicitWidth: 24
+                implicitHeight: 24
+
+                Rectangle {
+                    anchors.centerIn: parent
+                    width: 20
+                    height: 20
+                    radius: 10
+                    color: closeArea.containsMouse ? "#3a3a3a" : "transparent"
+                }
+
+                // KDE-style countdown ring: a single arc anchored at the top
+                // that depletes clockwise as the timeout runs out. Only shown
+                // for toasts that dismiss themselves; critical and resident
+                // notifications stay until dismissed, so they have no deadline
+                // to indicate.
+                Shape {
+                    id: countdownRing
+
+                    anchors.centerIn: parent
+                    width: 24
+                    height: 24
+                    visible: root.autoDismiss
+                    antialiasing: true
+
+                    ShapePath {
+                        strokeColor: "#e4e4e4"
+                        strokeWidth: 2
+                        fillColor: "transparent"
+                        capStyle: ShapePath.RoundCap
+
+                        PathAngleArc {
+                            centerX: countdownRing.width / 2
+                            centerY: countdownRing.height / 2
+                            // Inset by half the stroke width plus a little
+                            // breathing room so the arc is not clipped.
+                            radiusX: countdownRing.width / 2 - 2.5
+                            radiusY: countdownRing.height / 2 - 2.5
+                            startAngle: -90
+                            sweepAngle: -360 * root.countdown
+                        }
+                    }
+                }
 
                 Icon {
                     anchors.centerIn: parent

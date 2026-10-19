@@ -1,5 +1,6 @@
 import QtQuick
 import Quickshell
+import Quickshell.Wayland
 import qs.services
 
 Scope {
@@ -27,6 +28,13 @@ Scope {
         exclusiveZone: 0
         focusable: false
         visible: stack.childrenRect.height > 0
+
+        // Niri (and other compositors) draw focused fullscreen windows above
+        // the top layer, so the bar stays hidden behind them. Only the overlay
+        // layer renders above fullscreen, so toasts live there while the bar
+        // remains on the top layer.
+        WlrLayershell.layer: WlrLayer.Overlay
+        WlrLayershell.namespace: "quickshell-toast"
 
         Column {
             id: stack

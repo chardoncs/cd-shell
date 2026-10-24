@@ -15,6 +15,7 @@ Rectangle {
         Tray {}
         PowerProfile {}
         Battery {}
+        Bluetooth {}
         Networks {}
         PipewireDevices {}
         PerformanceStats {}

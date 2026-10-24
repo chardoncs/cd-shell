@@ -3,6 +3,7 @@ import Quickshell.Networking
 
 import qs.modules.components
 import qs.modules.windows
+import qs.utils
 
 // A single icon whose glyph follows the current connection, opening the
 // network window when clicked.
@@ -51,22 +52,6 @@ Rectangle {
 
     readonly property bool connected: root.wiredDevice !== null || root.connectedNetwork !== null
 
-    function signalGlyph(strength) {
-        if (strength >= 0.75) {
-            return "󰤨";
-        }
-        if (strength >= 0.5) {
-            return "󰤥";
-        }
-        if (strength >= 0.25) {
-            return "󰤢";
-        }
-        if (strength > 0) {
-            return "󰤟";
-        }
-        return "󰤯";
-    }
-
     implicitWidth: icon.implicitWidth + 8
     implicitHeight: 20
     radius: 6
@@ -89,7 +74,7 @@ Rectangle {
             if (root.connectedNetwork === null) {
                 return "󰤯";
             }
-            return root.signalGlyph(root.connectedNetwork.signalStrength);
+            return Wifi.signalGlyph(root.connectedNetwork.signalStrength);
         }
         color: root.connected ? "white" : "#99ffffff"
     }

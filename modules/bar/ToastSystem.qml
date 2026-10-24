@@ -53,6 +53,27 @@ Scope {
                     width: stack.width
                 }
             }
+
+            Repeater {
+                model: Notifications.internalNotifications
+
+                // The wrapper is needed because only an inline delegate can
+                // read the model's role; Toast itself is a separate component.
+                Item {
+                    required property var model
+
+                    width: stack.width
+                    height: toast.implicitHeight
+
+                    Toast {
+                        id: toast
+
+                        width: parent.width
+                        notification: model.entry
+                        defaultTimeout: Notifications.defaultTimeout
+                    }
+                }
+            }
         }
     }
 }

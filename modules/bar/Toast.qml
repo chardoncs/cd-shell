@@ -21,6 +21,9 @@ Rectangle {
     // not request a timeout, so fall back to our own default.
     readonly property int timeout: notification.expireTimeout > 0 ? notification.expireTimeout : root.defaultTimeout
     readonly property string appIconSource: notification.appIcon !== "" ? Quickshell.iconPath(notification.appIcon, "") : ""
+    // Shell-generated notifications can carry their own glyph (see
+    // services/Notifications.qml); D-Bus notifications fall back to a bell.
+    readonly property string glyph: notification.glyph ? notification.glyph : "󰂚"
 
     // Remaining fraction of the auto-dismiss countdown, from 1 (full) down to
     // 0 (expired). This is the single source of truth for the timeout, so the
@@ -176,7 +179,7 @@ Rectangle {
                 visible: !appIcon.visible
                 Layout.alignment: Qt.AlignVCenter
                 font.pixelSize: 16
-                text: "󰂚" // bell
+                text: root.glyph
             }
 
             Text {

@@ -55,22 +55,6 @@ Popup {
         return networks;
     }
 
-    function signalGlyph(strength) {
-        if (strength >= 0.75) {
-            return "󰤨";
-        }
-        if (strength >= 0.5) {
-            return "󰤥";
-        }
-        if (strength >= 0.25) {
-            return "󰤢";
-        }
-        if (strength > 0) {
-            return "󰤟";
-        }
-        return "󰤯";
-    }
-
     function stateText(network) {
         switch (network.state) {
         case ConnectionState.Connecting:
@@ -214,7 +198,7 @@ Popup {
                 spacing: 8
 
                 Icon {
-                    text: root.signalGlyph(netRow.modelData.signalStrength)
+                    text: Wifi.signalGlyph(netRow.modelData.signalStrength)
                     color: netRow.modelData.connected ? "white" : "#b3ffffff"
                 }
 
